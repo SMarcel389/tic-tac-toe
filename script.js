@@ -4,13 +4,18 @@
 // GameLogic playTurn: placeMarker switch active player
 // helper function to draw the board in console
 // display
+const body = document.querySelector("body")
 
 const display = (function () {
   const board = document.querySelector(".board");
-  const activePlayer = document.querySelector(".currentPlayer");
+  const activePlayer = document.querySelector(".message1");
   let gamestatus = "notover";
 
   const createGame = () => {
+    playernames = document.querySelector(".playernames")
+    body.removeChild(playernames)
+    activePlayer.innerText =
+              GameLogic.getCurrentPlayer().name + "'s turn";
     for (let i = 0; i < 9; i++) {
       const div = document.createElement("div");
       div.className = "div" + i;
@@ -34,7 +39,26 @@ const display = (function () {
       );
     }
   };
-  return { createGame };
+
+  const setupGame = () => {
+    activePlayer.innerHTML = "Name your players:"
+    playButton = document.querySelector(".playbutton")
+
+    playButton.addEventListener("click", function(){
+      player1name = document.querySelector("#Player1input")
+      player2name = document.querySelector("#Player2input")
+
+      Player1.setname(player1name.value)
+      Player2.setname(player2name.value)
+
+
+
+      createGame()
+    })
+
+  }
+
+  return { createGame, setupGame };
 })();
 
 const Gameboard = (function () {
@@ -61,10 +85,10 @@ const Gameboard = (function () {
     for (let i = 0; i < winConditions.length; i++) {
       const [a, b, c] = winConditions[i];
       if (board[a] !== " " && board[a] === board[b] && board[a] === board[c]) {
-        return board[a]; // returns winning marker ("X" or "O")
+        return board[a] + " wins!"; // returns winning marker ("X" or "O")
       }
     }
-    if (board.every((cell) => cell !== " ")) return "draw";
+    if (board.every((cell) => cell !== " ")) return "It's a draw!";
     return "notover";
   };
 
@@ -76,8 +100,8 @@ const Gameboard = (function () {
   };
 })();
 
-function Player(name, marker) {
-  this.name = name;
+function Player(marker) {
+  this.name = "name";
   this.marker = marker;
 }
 
@@ -85,8 +109,13 @@ Player.prototype.place = function (position) {
   Gameboard.placeMarker(position, this.marker);
 };
 
-let Player1 = new Player("Marci", "X");
-let Player2 = new Player("Peti", "O");
+Player.prototype.setname = function (name){
+  this.name = name
+}
+
+let Player1 = new Player("X")
+let Player2 = new Player("O")
+
 
 const GameLogic = (function () {
   let currentPlayer = Player1;
@@ -121,6 +150,6 @@ function playGame() {
   console.log("Winner:" + gamestatus);
 }
 
-display.createGame();
+display.setupGame();
 
 //playGame()
