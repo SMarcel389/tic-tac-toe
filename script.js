@@ -4,7 +4,7 @@
 // GameLogic playTurn: placeMarker switch active player
 // helper function to draw the board in console
 // display
-const body = document.querySelector("body")
+const body = document.querySelector("body");
 
 const display = (function () {
   const board = document.querySelector(".board");
@@ -12,10 +12,9 @@ const display = (function () {
   let gamestatus = "notover";
 
   const createGame = () => {
-    playernames = document.querySelector(".playernames")
-    body.removeChild(playernames)
-    activePlayer.innerText =
-              GameLogic.getCurrentPlayer().name + "'s turn";
+    playernames = document.querySelector(".playernames");
+    body.removeChild(playernames);
+    activePlayer.innerText = GameLogic.getCurrentPlayer().name + "'s turn";
     for (let i = 0; i < 9; i++) {
       const div = document.createElement("div");
       div.className = "div" + i;
@@ -41,22 +40,19 @@ const display = (function () {
   };
 
   const setupGame = () => {
-    activePlayer.innerHTML = "Name your players:"
-    playButton = document.querySelector(".playbutton")
+    activePlayer.innerHTML = "Name your players:";
+    playButton = document.querySelector(".playbutton");
 
-    playButton.addEventListener("click", function(){
-      player1name = document.querySelector("#Player1input")
-      player2name = document.querySelector("#Player2input")
+    playButton.addEventListener("click", function () {
+      player1name = document.querySelector("#Player1input");
+      player2name = document.querySelector("#Player2input");
 
-      Player1.setname(player1name.value)
-      Player2.setname(player2name.value)
+      Player1.setname(player1name.value);
+      Player2.setname(player2name.value);
 
-
-
-      createGame()
-    })
-
-  }
+      createGame();
+    });
+  };
 
   return { createGame, setupGame };
 })();
@@ -109,17 +105,17 @@ Player.prototype.place = function (position) {
   Gameboard.placeMarker(position, this.marker);
 };
 
-Player.prototype.setname = function (name){
-  this.name = name
-}
+Player.prototype.setname = function (name) {
+  this.name = name;
+};
 
-let Player1 = new Player("X")
-let Player2 = new Player("O")
-
+let Player1 = new Player("X");
+let Player2 = new Player("O");
 
 const GameLogic = (function () {
   let currentPlayer = Player1;
   const getCurrentPlayer = () => currentPlayer;
+
   const switchPlayer = () => {
     currentPlayer = currentPlayer === Player1 ? Player2 : Player1;
   };
